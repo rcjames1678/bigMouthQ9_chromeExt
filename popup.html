@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大口輸入法 Q9 IME 控制選單</title>
+  <style>
+    :root {
+      --crimson-900: #7f1d1d;
+      --crimson-800: #991b1b;
+      --crimson-700: #b91c1c;
+      --gold-300: #fcd34d;
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+    }
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 356px;
+      font-family: "Noto Sans CJK HK", "PingFang HK", "Microsoft JhengHei", system-ui, sans-serif;
+      background: #f8fafc;
+      color: var(--slate-900);
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--crimson-900) 0%, var(--crimson-800) 60%, var(--crimson-700) 100%);
+      color: #fffbeb;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--gold-300);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-badge {
+      background: var(--gold-300);
+      color: var(--crimson-900);
+      font-weight: 900;
+      font-size: 13px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    /* Master Switch Toggle */
+    .switch-btn {
+      background: #22c55e;
+      color: #ffffff;
+      border: 1.5px solid #bbf7d0;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .switch-btn.off {
+      background: #475569;
+      border-color: #94a3b8;
+      color: #e2e8f0;
+    }
+
+    /* Direct Typing Notice Banner */
+    .direct-banner {
+      background: #ecfdf5;
+      border-bottom: 1px solid #a7f3d0;
+      color: #065f46;
+      padding: 8px 14px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .direct-banner.off {
+      background: #f1f5f9;
+      border-bottom-color: #cbd5e1;
+      color: #475569;
+    }
+
+    .section {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .section-title {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--slate-500);
+      margin-bottom: 7px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Google Input Tools style radio list */
+    .ime-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ime-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      cursor: pointer;
+      transition: border-color 0.12s, background 0.12s;
+    }
+    .ime-item:hover {
+      border-color: var(--crimson-700);
+      background: #fffbeb;
+    }
+    .ime-item.active {
+      border-color: var(--crimson-800);
+      background: #fef2f2;
+    }
+    .ime-item-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .radio-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #94a3b8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ime-item.active .radio-dot {
+      border-color: var(--crimson-800);
+    }
+    .ime-item.active .radio-dot::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--crimson-800);
+    }
+    .ime-item-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+    .ime-item-desc {
+      font-size: 11px;
+      color: var(--slate-500);
+      font-weight: 600;
+    }
+
+    /* Segmented Pills & Selects */
+    .row-between {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 7px;
+    }
+    .row-between:last-child {
+      margin-bottom: 0;
+    }
+    .row-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--slate-700);
+    }
+    .seg-group {
+      display: inline-flex;
+      background: #e2e8f0;
+      padding: 2px;
+      border-radius: 6px;
+      gap: 2px;
+    }
+    .seg-btn {
+      border: none;
+      background: transparent;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--slate-700);
+      padding: 4px 9px;
+      border-radius: 5px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .seg-btn.active {
+      background: var(--crimson-800);
+      color: #ffffff;
+    }
+    .full-select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 7px;
+      border: 1.5px solid #94a3b8;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--slate-900);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    /* Quick Code Lookup Box */
+    .lookup-row {
+      display: flex;
+      gap: 5px;
+    }
+    .lookup-input {
+      flex: 1;
+      border: 1.5px solid #94a3b8;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 12.5px;
+      user-select: text !important;
+    }
+    .lookup-btn {
+      background: var(--crimson-800);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lookup-output {
+      margin-top: 6px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 8px;
+      font-size: 11.5px;
+      line-height: 1.45;
+      max-height: 105px;
+      overflow-y: auto;
+      user-select: text !important;
+      color: var(--slate-900);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 8px 14px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--slate-500);
+      font-weight: 600;
+    }
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--crimson-800);
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .scale-slider {
+      flex: 1;
+      accent-color: var(--crimson-800);
+      cursor: pointer;
+    }
+    .scale-val-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--crimson-800);
+      background: #fee2e2;
+      padding: 2px 7px;
+      border-radius: 5px;
+      min-width: 44px;
+      text-align: center;
+    }
+    .preset-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .preset-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--slate-300);
+      border-radius: 5px;
+      padding: 4px 2px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--slate-700);
+      cursor: pointer;
+      text-align: center;
+    }
+    .preset-btn:hover {
+      border-color: var(--crimson-700);
+    }
+    .preset-btn.active {
+      background: var(--crimson-800);
+      color: #ffffff;
+      border-color: var(--crimson-800);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">
+      <span class="logo-badge">大口 Q9</span>
+      <div>
+        <div class="brand-title">大口中文輸入法 v2.1</div>
+        <div class="brand-sub">網頁直接打字 · 自由縮放防遮擋</div>
+      </div>
+    </div>
+    <button class="switch-btn" id="btn-master-toggle">已啟用 ON</button>
+  </div>
+
+  <div class="direct-banner" id="direct-banner">
+    <span>✓</span>
+    <span id="banner-text">直接點擊網頁任何輸入框即可打字（免 Copy &amp; Paste！單按 Shift 切換中/英）</span>
+  </div>
+
+  <!-- 1. Select Input Method Scheme -->
+  <div class="section">
+    <div class="section-title">選擇輸入法模式 (點擊切換)</div>
+    <div class="ime-list">
+      <div class="ime-item active" id="item-shape">
+        <div class="ime-item-left">
+          <span class="radio-dot"></span>
+          <div>
+            <div class="ime-item-name">大口字形輸入法 (Q9 Shape)</div>
+            <div class="ime-item-desc">9 大特徵 × 81 字首部件 · 獨體字按 0 / 分體字取右字首</div>
+          </div>
+        </div>
+      </div>
+      <div class="ime-item" id="item-stroke">
+        <div class="ime-item-left">
+          <span class="radio-dot"></span>
+          <div>
+            <div class="ime-item-name">大口筆劃輸入法 (Q9 Stroke)</div>
+            <div class="ime-item-desc">5 基本筆劃 (一丨丿丶乙) + 24 個高頻輔助部首</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Keyboard & Window Behavior -->
+  <div class="section">
+    <div class="section-title">鍵盤按鍵配置 (無小鍵盤筆電可選右手字母鍵)</div>
+    <select class="full-select" id="select-layout">
+      <option value="all">數字鍵 1-9 + Numpad 小鍵盤 (預設直接打字)</option>
+      <option value="laptop">筆電右手鍵 (789 / UIO / JKL / M,. 盲打九宮格)</option>
+      <option value="numpad">僅限右側 Numpad 小鍵盤 (上方 1-9 輸出數字)</option>
+      <option value="mouse">純滑鼠點擊九宮格</option>
+    </select>
+
+    <div class="row-between" style="margin-top: 9px;">
+      <span class="row-label">輸出字體 (含 HKSCS 紅字)</span>
+      <div class="seg-group">
+        <button class="seg-btn active" id="btn-var-trad">繁體</button>
+        <button class="seg-btn" id="btn-var-simp">簡體 (打繁出簡)</button>
+      </div>
+    </div>
+
+    <div class="row-between">
+      <span class="row-label">九宮格選字窗位置</span>
+      <div class="seg-group">
+        <button class="seg-btn active" id="btn-win-follow">跟隨輸入框</button>
+        <button class="seg-btn" id="btn-win-dock">固定右下角</button>
+      </div>
+    </div>
+
+    <div style="margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 8px;">
+      <div class="row-between" style="margin-top: 0;">
+        <span class="row-label">視窗大小縮放 (或拉動九宮格右下角)</span>
+        <span class="scale-val-badge" id="scale-val-badge">85%</span>
+      </div>
+      <div class="slider-row">
+        <span style="font-size:11px;color:#64748b;font-weight:700;">細</span>
+        <input type="range" class="scale-slider" id="slider-scale" min="55" max="140" step="5" value="85" />
+        <span style="font-size:11px;color:#64748b;font-weight:700;">大</span>
+      </div>
+      <div class="preset-row">
+        <button class="preset-btn" data-scale="0.65">迷你 65%</button>
+        <button class="preset-btn active" data-scale="0.85">小巧 85%</button>
+        <button class="preset-btn" data-scale="1">標準 100%</button>
+        <button class="preset-btn" data-scale="1.2">大字 120%</button>
+      </div>
+      <div class="row-between" style="margin-top: 8px;">
+        <span class="row-label">防遮擋模式 (透明度 / 彈出時機)</span>
+        <div class="seg-group">
+          <button class="seg-btn" id="btn-opacity-toggle" title="半透明顯示，滑鼠移上時自動變清晰">半透明</button>
+          <button class="seg-btn" id="btn-autohide-toggle" title="開啟後，平時隱藏九宮格，按 1-9 打字時才彈出">打字才彈出</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Quick Reverse Code Lookup -->
+  <div class="section">
+    <div class="section-title">大口碼速查小工具 (忘記拆碼時可查)</div>
+    <div class="lookup-row">
+      <input type="text" class="lookup-input" id="lookup-input" placeholder="輸入漢字查大口字形/筆劃碼 (例: 香港𨋢)..." />
+      <button class="lookup-btn" id="btn-lookup">查碼</button>
+    </div>
+    <div class="lookup-output" id="lookup-output">
+      💡 <b>直接打字提示</b>：關閉此選單後，直接點選網頁上的搜尋欄、聊天室或表單輸入框即可用鍵盤打字！按 <code>Shift</code> 可隨時切換中/英文。
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>快捷鍵：Alt+Q 開關 · Shift 切換中/英</span>
+    <button class="link-btn" id="btn-open-demo">開啟打字練習場</button>
+  </div>
+
+  <script src="q9_data.js"></script>
+  <script src="q9_engine.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

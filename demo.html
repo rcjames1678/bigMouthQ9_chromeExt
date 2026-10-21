@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大口輸入法 (Q9 IME) 網頁輸入測試頁</title>
+  <style>
+    body {
+      font-family: "Noto Sans CJK HK", "PingFang HK", "Microsoft JhengHei", system-ui, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      margin: 0;
+      padding: 24px 360px 24px 24px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      color: #991b1b;
+    }
+    p.sub {
+      margin: 0 0 14px 0;
+      font-size: 13px;
+      color: #475569;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #1e293b;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      border: 1.5px solid #94a3b8;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 16px;
+      font-family: inherit;
+      margin-bottom: 12px;
+      box-sizing: border-box;
+    }
+    .editable-box {
+      border: 1.5px dashed #0284c7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-height: 54px;
+      font-size: 16px;
+      background: #f8fafc;
+    }
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      font-size: 12.5px;
+    }
+    .ex-item {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, monospace;
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>大口輸入法 (Q9 Chinese IME) 網頁實時打字測試場</h1>
+    <p class="sub">右側已自動開啟 Shadow-DOM 浮動九宮格視窗。點擊下方任一輸入框後，即可使用數字鍵 1-9 / Numpad / 筆電鍵 (789/UIO/JKL) 或滑鼠點擊九宮格輸入中文。</p>
+
+    <label for="test-input">1. 標準單行輸入框 (&lt;input type="text"&gt;)：</label>
+    <input type="text" id="test-input" placeholder="請點擊此處並用大口打字..." />
+
+    <label for="test-textarea">2. 多行文字區 (&lt;textarea&gt;)：</label>
+    <textarea id="test-textarea" rows="3" placeholder="測試多行輸入、關聯字與標點符號..."></textarea>
+
+    <label>3. 富文本編輯區 (contenteditable="true")：</label>
+    <div class="editable-box" id="test-editable" contenteditable="true"></div>
+  </div>
+
+  <div class="card">
+    <label>大口字形與筆劃速查範例：</label>
+    <div class="examples-grid">
+      <div class="ex-item"><b>香</b>（字形獨體字）：<code>9</code> → <code>5</code> → <code>0</code> → 選 <code>6</code></div>
+      <div class="ex-item"><b>港</b>（字形分體字）：<code>4</code> → <code>9</code> → <code>1</code> → 選 <code>3</code></div>
+      <div class="ex-item"><b>九</b>（字形獨體字）：<code>2</code> → <code>7</code> → <code>0</code> → 選 <code>2</code></div>
+      <div class="ex-item"><b>方</b>（字形獨體字）：<code>4</code> → <code>4</code> → <code>0</code> → 選 <code>5</code></div>
+      <div class="ex-item"><b>𨋢</b>（HKSCS 紅字）：<code>1</code> → <code>3</code> → <code>4</code> → <code>0</code>(下頁) → 選 <code>5</code></div>
+      <div class="ex-item"><b>陳</b>（百家姓）：<code>5</code> → <code>0</code> (姓氏) → 選 <code>2</code></div>
+    </div>
+  </div>
+
+  <script src="q9_data.js"></script>
+  <script src="q9_engine.js"></script>
+  <script src="swipe_engine.js"></script>
+  <script src="content.js"></script>
+</body>
+</html>

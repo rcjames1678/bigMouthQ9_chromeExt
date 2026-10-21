@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "大口輸入法 Q9 Chinese IME (網頁直接打字版)",
+  "short_name": "大口 Q9 IME",
+  "version": "2.2.0",
+  "description": "像 Chrome 速成 Plugin 一樣直接在任何網頁輸入框打字，免 Copy & Paste！支援大口字形/筆劃、英文 Swipe 滑行、8大類 380+ Emoji 翻頁、長按連續 Delete、HKSCS 香港字及自由縮放視窗。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "大口輸入法 Q9 IME (已啟用：點擊任何網頁輸入框即可直接打字)",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "permissions": [
+    "clipboardRead",
+    "clipboardWrite",
+    "storage",
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["q9_data.js", "q9_engine.js", "swipe_engine.js", "content.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "commands": {
+    "toggle-q9": {
+      "suggested_key": {
+        "default": "Alt+Q",
+        "mac": "Alt+Q"
+      },
+      "description": "開關大口輸入法 (ON / OFF)"
+    }
+  }
+}
